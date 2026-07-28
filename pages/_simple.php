@@ -1,0 +1,2 @@
+<?php
+function simple_page(string $title,string $eyebrow,string $intro,string $body):void{page_head($title." | Ellen's Florist",$intro,strtolower(str_replace(' ','-',$title)));?><main id="main"><section class="page-hero"><p class="eyebrow"><?=e($eyebrow)?></p><h1><?=e($title)?></h1><p><?=e($intro)?></p></section><section class="section"><div class="split"><div class="image-block" role="img" aria-label="Ellen's Florist arrangement"></div><div><?=$body?></div></div></section></main><?php page_footer();}
