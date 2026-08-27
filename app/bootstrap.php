@@ -27,4 +27,5 @@ function csrf_check(): void { if (!hash_equals($_SESSION['csrf'] ?? '', $_POST['
 function start_secure_session(): void { session_set_cookie_params(['httponly'=>true,'secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),'samesite'=>'Lax']); session_start(); }
 function captcha(): array { $a=random_int(1,9); $b=random_int(1,9); $subtract=(bool)random_int(0,1); if($subtract && $b>$a) [$a,$b]=[$b,$a]; $_SESSION['captcha_answer']=$subtract?$a-$b:$a+$b; return [$a, $subtract ? '−' : '+', $b]; }
 function rate_limit(string $action, int $limit=5, int $seconds=3600): bool { $key='rate_'.$action.'_'.hash('sha256', $_SERVER['REMOTE_ADDR'] ?? ''); $row=$_SESSION[$key] ?? ['count'=>0,'at'=>time()]; if(time()-$row['at']>$seconds) $row=['count'=>0,'at'=>time()]; $row['count']++; $_SESSION[$key]=$row; return $row['count'] <= $limit; }
+function published_content(string $type): array { try { $q=db()->prepare('SELECT * FROM content WHERE type=? AND status="published" ORDER BY published_at DESC, id DESC'); $q->execute([$type]); return $q->fetchAll(); } catch (Throwable $e) { return []; } }
 start_secure_session();
