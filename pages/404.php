@@ -1,0 +1,1 @@
+<?php page_head('Page not found | Ellen’s Florist','The page you are looking for cannot be found.'); ?><main id="main"><section class="page-hero"><p class="eyebrow">404</p><h1>This page has wandered off.</h1><p>Let’s guide you back to something beautiful.</p><a class="button gold" href="/">Return home</a></section></main><?php page_footer(); ?>
