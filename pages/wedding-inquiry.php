@@ -69,7 +69,7 @@ page_head('Wedding Inquiry | Ellens Florist', 'Tell us about your celebration an
                         <p><label for="groom_name">Groom’s name</label><input id="groom_name" name="groom_name"></p>
                         <p><label for="email">Email *</label><input required type="email" id="email" name="email" autocomplete="email"></p>
                         <p><label for="phone">Phone number *</label><input required id="phone" name="phone" inputmode="tel" autocomplete="tel"></p>
-                        <p><label for="wedding_date">Wedding date</label><input type="date" id="wedding_date" name="wedding_date"></p>
+                        <p><label for="wedding_date">Wedding date</label><input type="date" id="wedding_date" name="wedding_date" min="<?= date('Y-m-d') ?>"></p>
                         <p><label for="venue">Wedding venue</label><input id="venue" name="venue"></p>
                         <p><label for="guests">Estimated guests</label><input type="number" min="1" id="guests" name="guests"></p>
                         <p><label for="style">Decoration style</label><select id="style" name="style"><option value="">Select a style</option><option>Classic romance</option><option>Modern minimal</option><option>Garden-inspired</option><option>Editorial luxury</option><option>Not sure yet</option></select></p>
