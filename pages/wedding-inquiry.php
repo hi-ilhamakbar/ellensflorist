@@ -15,12 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $file = null;
             if (!empty($_FILES['inspiration']['name'])) {
-                $ok = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-                $mime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['inspiration']['tmp_name']);
-                if (!isset($ok[$mime]) || $_FILES['inspiration']['size'] > 5 * 1024 * 1024) {
+                $image = @getimagesize($_FILES['inspiration']['tmp_name']);
+                $ok = [IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png', IMAGETYPE_WEBP => 'webp'];
+                $type = $image[2] ?? null;
+                if (!is_uploaded_file($_FILES['inspiration']['tmp_name']) || !isset($ok[$type]) || $_FILES['inspiration']['size'] > 5 * 1024 * 1024) {
                     throw new RuntimeException('Upload a JPG, PNG, or WebP image under 5 MB.');
                 }
-                $name = bin2hex(random_bytes(16)) . '.' . $ok[$mime];
+                $name = bin2hex(random_bytes(16)) . '.' . $ok[$type];
                 $dir = ROOT_PATH . '/storage/uploads';
                 if (!is_dir($dir)) mkdir($dir, 0755, true);
                 move_uploaded_file($_FILES['inspiration']['tmp_name'], $dir . '/' . $name);
