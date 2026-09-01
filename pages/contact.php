@@ -60,5 +60,5 @@ page_head('Contact Ellens Florist | Wedding Florist', 'Get in touch with Ellens 
     <iframe class="map" title="Map to Ellens Florist" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.701313288234!2d115.15239040000002!3d-8.624646699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2393daaad0f95%3A0x544463247109333f!2sEllensflorist!5e0!3m2!1sen!2sid!4v1785208674074!5m2!1sen!2sid" width="600" height="450" style="border:0" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInputWithUtils.min.js"></script>
-<script>window.addEventListener('load',function(){var phone=document.querySelector('#phone');if(phone)window.intlTelInput(phone,{initialCountry:'id',separateDialCode:true})})</script>
+<script>window.addEventListener('load',function(){var phone=document.querySelector('#phone'),form=document.querySelector('form'),widget=phone?window.intlTelInput(phone,{initialCountry:'id',separateDialCode:true}):null;if(form&&widget)form.addEventListener('submit',function(){phone.value=widget.getNumber()||phone.value})})</script>
 <?php page_footer(); ?>

@@ -59,7 +59,7 @@ page_head('Wedding Inquiry | Ellens Florist', 'Tell us about your celebration an
     <section class="section tinted">
         <div class="form-wrap">
             <?php if ($sent): ?>
-                <div class="alert"><strong>Thank you—your inquiry is with us.</strong> We’ll be in touch soon with the next steps.</div>
+                <div class="alert"><strong>Thank you, your inquiry is with us.</strong> We’ll be in touch soon with the next steps.</div>
             <?php else: ?>
                 <?php if ($error): ?><div class="alert"><?= e($error) ?></div><?php endif; ?>
                 <form method="post" enctype="multipart/form-data">
@@ -91,7 +91,9 @@ page_head('Wedding Inquiry | Ellens Florist', 'Tell us about your celebration an
 <script>
 window.addEventListener('load', function () {
     var phone = document.querySelector('#phone');
-    if (phone) window.intlTelInput(phone, { initialCountry: 'id', separateDialCode: true });
+    var phoneForm = document.querySelector('form');
+    var phoneWidget = phone ? window.intlTelInput(phone, { initialCountry: 'id', separateDialCode: true }) : null;
+    if (phoneForm && phoneWidget) phoneForm.addEventListener('submit', function () { phone.value = phoneWidget.getNumber() || phone.value; });
     var budget = document.querySelector('#budget');
     var currency = document.querySelector('[name="currency"]');
     if (!budget || !currency) return;
