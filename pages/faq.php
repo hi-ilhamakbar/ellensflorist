@@ -1,1 +1,16 @@
-<?php page_head("Frequently Asked Questions | Ellen's Florist", "Answers to common questions about Ellen's Florist wedding flowers and events.", 'faq'); ?><main id="main"><section class="page-hero"><p class="eyebrow">Helpful answers</p><h1>Frequently asked questions.</h1></section><section class="section"><div class="accordion"><?php foreach([['How early should we enquire for a wedding?','We recommend enquiring as soon as your date and venue are secured. Availability is limited, especially during peak wedding months.'],['Do you offer a consultation?','Yes. Wedding inquiries begin with a consultation so we can understand your style, venue, requirements, and budget.'],['Can you work with our inspiration images?','Absolutely. Share the images you love, and we will interpret them in a way that feels original, seasonal, and suited to your celebration.'],['Do you provide installation and styling?','Yes. Our full wedding and event services include delivery, setup, styling, and pack-down arrangements where required.'],['Can I order flowers for a non-wedding occasion?','Yes. We create bouquets, flower boxes, grand-opening flowers, sympathy flowers, and corporate arrangements.'] ] as [$q,$a]):?><details><summary><?=e($q)?></summary><p><?=e($a)?></p></details><?php endforeach;?></div></section></main><?php page_footer(); ?>
+<?php
+$faqs=[
+['Do you do flowers and décor?','Yes. We do both—from bridal bouquets and ceremony flowers to table styling, backdrops, and floral installations.'],
+['Can I share my Pinterest or moodboard?','Absolutely. We would love to see your ideas and inspiration.'],
+['Can I request specific flowers?','Of course. Let us know your favourites, and we will suggest beautiful alternatives when a variety is out of season.'],
+['Can you work with my budget?','Yes. Share your budget and priorities, and we will create the best design within them.'],
+['How far in advance should I book?','We recommend booking 3–6 months ahead, especially for popular wedding dates.'],
+['Do you work with wedding planners?','Yes. We love working with wedding planners and trusted vendors to make every detail run smoothly.'],
+['Do you work with international couples?','Yes. We work with couples from around the world planning their dream wedding in Bali.'],
+['How do I secure my date?','Once you are happy with the proposal, a 50% deposit secures your date and begins the detailed design process.'],
+['When do we get the moodboard?','Once the deposit is received, we start creating your detailed moodboard and design.'],
+['Do you handle setup?','Yes. Our team takes care of the floral and décor setup on your wedding day.'],
+['What if my favourite flowers are not available?','No worries. We will suggest beautiful alternatives that still match your colour palette and overall design.'],
+['How do I get started?','Send us your wedding date, venue, and ideas—and let’s create something beautiful together.']
+]; page_head('Frequently Asked Questions | Ellens Florist','Answers to common questions about wedding flowers and décor with Ellens Florist.','faq'); ?>
+<main id="main"><section class="page-hero"><p class="eyebrow">Helpful answers</p><h1>Frequently asked questions.</h1><p>Everything you need to know before we begin creating your celebration.</p></section><section class="section"><div class="accordion"><?php foreach($faqs as [$question,$answer]):?><details><summary><?=e($question)?></summary><p><?=e($answer)?></p></details><?php endforeach?></div></section></main><?php page_footer(); ?>
