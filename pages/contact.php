@@ -1,5 +1,64 @@
 <?php
-require ROOT_PATH.'/app/mailer.php'; $sent=false;$err='';
-if($_SERVER['REQUEST_METHOD']==='POST'){csrf_check();if(!rate_limit('contact'))$err='Please wait before submitting again.';elseif((int)($_POST['captcha']??-1)!==($_SESSION['captcha_answer']??-2))$err='The security answer was incorrect. Please try again.';elseif(empty($_POST['full_name'])||!filter_var($_POST['email']??'',FILTER_VALIDATE_EMAIL)||empty($_POST['message']))$err='Please complete your name, email, and message.';else{try{$fields=['Name'=>trim($_POST['full_name']),'Email'=>trim($_POST['email']),'Phone'=>trim($_POST['phone']),'Subject'=>trim($_POST['subject']),'Message'=>trim($_POST['message'])];$q=db()->prepare('INSERT INTO contact_messages(full_name,email,phone,subject,message) VALUES(?,?,?,?,?)');$q->execute(array_values($fields));notify_submission('We received your message - Ellen Florist',$fields,$_POST['email']);$sent=true;}catch(Throwable $e){error_log($e->getMessage());$err='We could not save your message. Please check that the database is installed, then try again.';}}} [$a,$op,$b]=captcha();
-page_head('Contact Ellen Florist | Wedding Florist','Get in touch with Ellen Florist for wedding flowers, events, and bespoke arrangements.','contact'); ?>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css"><main id="main"><section class="page-hero"><p class="eyebrow">Get in touch</p><h1>We’d love to hear what you’re celebrating.</h1></section><section class="section tinted"><div class="split"><div><h2>Let’s talk flowers.</h2><p>Customer service response hours<br><strong>09:00–20:00 WITA</strong></p><p><strong>Store visits are strictly by appointment only.</strong></p><p><a href="https://wa.link/s50rb5" target="_blank" rel="noopener">Chat on WhatsApp →</a></p></div><div class="form-wrap"><?php if($sent):?><div class="alert"><strong>Thank you for reaching out.</strong> A copy of your message has been received by our team.</div><?php else:if($err):?><div class="alert"><?=e($err)?></div><?php endif;?><form method="post"><input type="hidden" name="csrf" value="<?=csrf()?>"><div class="form-grid"><p class="full"><label>Full name *</label><input required name="full_name" autocomplete="name"></p><p><label>Email address *</label><input required type="email" name="email" autocomplete="email"></p><p><label>Phone number</label><input id="phone" name="phone" inputmode="tel" autocomplete="tel"></p><p class="full"><label>Subject *</label><input required name="subject"></p><p class="full"><label>Message *</label><textarea required name="message"></textarea></p><p><label>Security: <?=e("$a $op $b")?> = ? *</label><input required type="number" name="captcha" inputmode="numeric"></p><p class="full"><button class="button gold">Send message</button></p></div></form><?php endif;?></div></div></section><iframe class="map" title="Map to Ellen Florist" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.701313288234!2d115.15239040000002!3d-8.624646699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2393daaad0f95%3A0x544463247109333f!2sEllensflorist!5e0!3m2!1sen!2sid!4v1785208674074!5m2!1sen!2sid" width="600" height="450" style="border:0" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></main><script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInputWithUtils.min.js"></script><script>window.addEventListener('load',function(){window.intlTelInput(document.querySelector('#phone'),{initialCountry:'id',separateDialCode:true})})</script><?php page_footer(); ?>
+require ROOT_PATH . '/app/mailer.php';
+$sent = false;
+$err = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_check();
+    if (!rate_limit('contact')) {
+        $err = 'Please wait before submitting again.';
+    } elseif ((int) ($_POST['captcha'] ?? -1) !== ($_SESSION['captcha_answer'] ?? -2)) {
+        $err = 'The security answer was incorrect. Please try again.';
+    } elseif (empty($_POST['full_name']) || !filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL) || empty($_POST['message'])) {
+        $err = 'Please complete your name, email, and message.';
+    } else {
+        try {
+            $fields = [
+                'Name' => trim($_POST['full_name']), 'Email' => trim($_POST['email']),
+                'Phone' => trim($_POST['phone']), 'Subject' => trim($_POST['subject']), 'Message' => trim($_POST['message']),
+            ];
+            $q = db()->prepare('INSERT INTO contact_messages(full_name,email,phone,subject,message) VALUES(?,?,?,?,?)');
+            $q->execute(array_values($fields));
+            notify_submission('We received your message - Ellens Florist', $fields, $_POST['email']);
+            $sent = true;
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            $err = 'We could not save your message. Please check that the database is installed, then try again.';
+        }
+    }
+}
+[$a, $op, $b] = captcha();
+page_head('Contact Ellens Florist | Wedding Florist', 'Get in touch with Ellens Florist for wedding flowers, events, and bespoke arrangements.', 'contact');
+?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+<main id="main">
+    <section class="page-hero"><p class="eyebrow">Get in touch</p><h1>We’d love to hear what you’re celebrating.</h1></section>
+    <section class="section tinted">
+        <div class="split">
+            <div><h2>Let’s talk flowers.</h2><p>Customer service response hours<br><strong>09:00–20:00 WITA (UTC+8)</strong></p><p><strong>Store visits are strictly by appointment only.</strong></p><p><a href="https://wa.link/s50rb5" target="_blank" rel="noopener">Chat on WhatsApp →</a></p></div>
+            <div class="form-wrap">
+                <?php if ($sent): ?>
+                    <div class="alert"><strong>Thank you for reaching out.</strong> Your message has been received by our team.</div>
+                <?php else: ?>
+                    <?php if ($err): ?><div class="alert"><?= e($err) ?></div><?php endif; ?>
+                    <form method="post">
+                        <input type="hidden" name="csrf" value="<?= csrf() ?>">
+                        <div class="form-grid">
+                            <p class="full"><label for="full_name">Full name *</label><input required id="full_name" name="full_name" autocomplete="name"></p>
+                            <p><label for="email">Email address *</label><input required type="email" id="email" name="email" autocomplete="email"></p>
+                            <p><label for="phone">Phone number</label><input id="phone" name="phone" inputmode="tel" autocomplete="tel"></p>
+                            <p class="full"><label for="subject">Subject *</label><input required id="subject" name="subject"></p>
+                            <p class="full"><label for="message">Message *</label><textarea required id="message" name="message"></textarea></p>
+                            <p><label for="captcha">Security: <?= e("$a $op $b") ?> = ? *</label><input required type="number" id="captcha" name="captcha" inputmode="numeric"></p>
+                            <p class="full"><button class="button gold">Send message</button></p>
+                        </div>
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+    <iframe class="map" title="Map to Ellens Florist" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.701313288234!2d115.15239040000002!3d-8.624646699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd2393daaad0f95%3A0x544463247109333f!2sEllensflorist!5e0!3m2!1sen!2sid!4v1785208674074!5m2!1sen!2sid" width="600" height="450" style="border:0" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInputWithUtils.min.js"></script>
+<script>window.addEventListener('load',function(){var phone=document.querySelector('#phone');if(phone)window.intlTelInput(phone,{initialCountry:'id',separateDialCode:true})})</script>
+<?php page_footer(); ?>
