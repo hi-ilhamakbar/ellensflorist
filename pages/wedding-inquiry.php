@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             $file = null;
+            $attachment = null;
             if (!empty($_FILES['inspiration']['name'])) {
                 $image = @getimagesize($_FILES['inspiration']['tmp_name']);
                 $ok = [IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png', IMAGETYPE_WEBP => 'webp'];
@@ -26,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!is_dir($dir)) mkdir($dir, 0755, true);
                 move_uploaded_file($_FILES['inspiration']['tmp_name'], $dir . '/' . $name);
                 $file = 'storage/uploads/' . $name;
+                $attachment = ['path' => $dir . '/' . $name, 'name' => 'wedding-inspiration.' . $ok[$type]];
             }
             $budget = trim($_POST['currency']) . ' ' . trim($_POST['budget']);
             $q = db()->prepare('INSERT INTO inquiries (bride_name,groom_name,email,phone,wedding_date,venue,guests,decoration_style,flower_preference,budget,contact_method,notes,inspiration_path) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
@@ -38,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'Bride' => $_POST['bride_name'], 'Groom' => $_POST['groom_name'], 'Email' => $_POST['email'],
                 'Phone' => $_POST['phone'], 'Wedding date' => $_POST['wedding_date'], 'Venue' => $_POST['venue'],
                 'Budget' => $budget, 'Notes' => $_POST['notes'],
-            ], $_POST['email']);
+            ], $_POST['email'], $attachment ? [$attachment] : []);
             $sent = true;
         } catch (Throwable $e) {
             error_log($e->getMessage());
