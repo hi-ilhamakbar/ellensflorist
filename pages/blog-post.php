@@ -57,7 +57,7 @@ $related = array_filter($fallback_posts, static fn ($slug) => $slug !== $post_sl
 <main id="main">
     <article class="journal-article">
         <header class="page-hero"><p class="eyebrow">Ellens Florist journal</p><h1><?= e($post['title']) ?></h1><p><?= e($post['excerpt']) ?></p></header>
-        <div class="post-hero-image content-image" style="background-image:url('<?= e($post['image_path']) ?>')" role="img" aria-label="<?= e($post['title']) ?>"></div>
+        <div class="post-hero-image content-image" style="background-image:url('<?= e(real_image_path($post['image_path'])) ?>')" role="img" aria-label="<?= e($post['title']) ?>"></div>
         <div class="journal-copy">
             <?php foreach ($post['body'] as $paragraph): ?><p><?= nl2br(e(trim($paragraph))) ?></p><?php endforeach; ?>
             <p><a class="button gold" href="/wedding-inquiry">Plan your wedding florals</a></p>

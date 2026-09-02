@@ -16,7 +16,7 @@ if (!$posts) {
         <div class="post-list">
             <?php foreach ($posts as $post): ?>
                 <article class="post">
-                    <div class="image-block content-image" style="background-image:url('<?= e($post['image_path']) ?>')"></div>
+                    <div class="image-block content-image" style="background-image:url('<?= e(real_image_path($post['image_path'])) ?>')"></div>
                     <div>
                         <p class="eyebrow">Ellens Florist journal</p>
                         <h2><?= e($post['title']) ?></h2>
