@@ -28,5 +28,27 @@ function start_secure_session(): void { session_set_cookie_params(['httponly'=>t
 function captcha(): array { $a=random_int(1,9); $b=random_int(1,9); $subtract=(bool)random_int(0,1); if($subtract && $b>$a) [$a,$b]=[$b,$a]; $_SESSION['captcha_answer']=$subtract?$a-$b:$a+$b; return [$a, $subtract ? '−' : '+', $b]; }
 function rate_limit(string $action, int $limit=5, int $seconds=3600): bool { $key='rate_'.$action.'_'.hash('sha256', $_SERVER['REMOTE_ADDR'] ?? ''); $row=$_SESSION[$key] ?? ['count'=>0,'at'=>time()]; if(time()-$row['at']>$seconds) $row=['count'=>0,'at'=>time()]; $row['count']++; $_SESSION[$key]=$row; return $row['count'] <= $limit; }
 function published_content(string $type): array { try { $q=db()->prepare('SELECT * FROM content WHERE type=? AND status="published" ORDER BY published_at DESC, id DESC'); $q->execute([$type]); return $q->fetchAll(); } catch (Throwable $e) { return []; } }
-function real_image_path(?string $path): string { $legacy = ['/assets/images/hero-wedding-florals.png'=>'/assets/images/claire-ceremony.webp','/assets/images/bridal-bouquet.png'=>'/assets/images/cassy-bouquet.webp','/assets/images/ceremony-arch.png'=>'/assets/images/claire-reception.webp','/assets/images/reception-tablescape.png'=>'/assets/images/chloe-ceremony.webp','/assets/images/temporary-wedding-reception.png'=>'/assets/images/cassy-reception.webp']; return $legacy[$path] ?? (string) $path; }
+function real_image_path(?string $path): string {
+    // Keep previously published CMS entries working while the media library moves to the new wedding collection.
+    $replacements = [
+        '/assets/images/hero-wedding-florals.png' => '/assets/images/mega-will-ceremony.webp',
+        '/assets/images/bridal-bouquet.png' => '/assets/images/jisoo-sabrina-ceremony.webp',
+        '/assets/images/ceremony-arch.png' => '/assets/images/mega-will-reception.webp',
+        '/assets/images/reception-tablescape.png' => '/assets/images/mega-will-table.webp',
+        '/assets/images/temporary-wedding-reception.png' => '/assets/images/jisoo-sabrina-reception.webp',
+        '/assets/images/cassy-bouquet.webp' => '/assets/images/jisoo-sabrina-ceremony.webp',
+        '/assets/images/cassy-ceremony.webp' => '/assets/images/mega-will-ceremony.webp',
+        '/assets/images/cassy-details.webp' => '/assets/images/jisoo-sabrina-reception.webp',
+        '/assets/images/cassy-reception.webp' => '/assets/images/mega-will-reception.webp',
+        '/assets/images/cassy-table.webp' => '/assets/images/mega-will-table.webp',
+        '/assets/images/chloe-ceremony.webp' => '/assets/images/mega-will-table.webp',
+        '/assets/images/chloe-details.webp' => '/assets/images/jisoo-sabrina-ceremony.webp',
+        '/assets/images/chloe-reception.webp' => '/assets/images/mega-will-dance.webp',
+        '/assets/images/claire-ceremony.webp' => '/assets/images/mega-will-ceremony.webp',
+        '/assets/images/claire-details.webp' => '/assets/images/jisoo-sabrina-reception.webp',
+        '/assets/images/claire-reception.webp' => '/assets/images/mega-will-details.webp',
+    ];
+
+    return $replacements[$path] ?? (string) $path;
+}
 start_secure_session();

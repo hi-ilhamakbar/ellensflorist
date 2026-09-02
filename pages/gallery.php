@@ -3,17 +3,13 @@ page_head('Gallery | Ellens Florist', 'Browse Ellens Florist wedding flowers and
 $items = published_content('gallery');
 if (!$items) {
     $items = [
-        ['title' => 'Ivory Garden Reception', 'image_path' => '/assets/images/cassy-reception.webp'],
-        ['title' => 'Blush Ceremony Moment', 'image_path' => '/assets/images/claire-ceremony.webp'],
-        ['title' => 'Golden Hour Tablescape', 'image_path' => '/assets/images/chloe-ceremony.webp'],
-        ['title' => 'Modern Garden Romance', 'image_path' => '/assets/images/cassy-bouquet.webp'],
-        ['title' => 'Dinner Under Flowers', 'image_path' => '/assets/images/claire-reception.webp'],
-        ['title' => 'Cassy & Brian Welcome', 'image_path' => '/assets/images/cassy-ceremony.webp'],
-        ['title' => 'Cassy & Brian Floral Details', 'image_path' => '/assets/images/cassy-details.webp'],
-        ['title' => 'Cassy & Brian Table Styling', 'image_path' => '/assets/images/cassy-table.webp'],
-        ['title' => 'Chloe & Blane Celebration', 'image_path' => '/assets/images/chloe-reception.webp'],
-        ['title' => 'Chloe & Blane Floral Details', 'image_path' => '/assets/images/chloe-details.webp'],
-        ['title' => 'Claire & Michal Wedding Details', 'image_path' => '/assets/images/claire-details.webp'],
+        ['title' => 'Mega & Will Ceremony', 'image_path' => '/assets/images/mega-will-ceremony.webp'],
+        ['title' => 'Mega & Will Reception', 'image_path' => '/assets/images/mega-will-reception.webp'],
+        ['title' => 'Mega & Will Floral Details', 'image_path' => '/assets/images/mega-will-details.webp'],
+        ['title' => 'Mega & Will Tablescape', 'image_path' => '/assets/images/mega-will-table.webp'],
+        ['title' => 'Mega & Will Celebration', 'image_path' => '/assets/images/mega-will-dance.webp'],
+        ['title' => 'Jisoo & Sabrina Bridal Flowers', 'image_path' => '/assets/images/jisoo-sabrina-ceremony.webp'],
+        ['title' => 'Jisoo & Sabrina Wedding Moment', 'image_path' => '/assets/images/jisoo-sabrina-reception.webp'],
     ];
 }
 ?>
