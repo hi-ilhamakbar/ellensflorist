@@ -22,6 +22,11 @@ function db(): PDO {
 }
 function e(?string $text): string { return htmlspecialchars((string)$text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function url(string $path = ''): string { return rtrim(env('APP_URL','https://ellensflorist.com'), '/') . ($path ? '/' . ltrim($path, '/') : ''); }
+function asset_url(string $path): string {
+    $file = ROOT_PATH . '/' . ltrim($path, '/');
+    $version = is_file($file) ? (string) filemtime($file) : '';
+    return $path . ($version !== '' ? '?v=' . rawurlencode($version) : '');
+}
 function csrf(): string { if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32)); return $_SESSION['csrf']; }
 function csrf_check(): void { if (!hash_equals($_SESSION['csrf'] ?? '', $_POST['csrf'] ?? '')) { http_response_code(419); exit('Your session has expired. Please return and try again.'); } }
 function start_secure_session(): void { session_set_cookie_params(['httponly'=>true,'secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),'samesite'=>'Lax']); session_start(); }
@@ -49,6 +54,6 @@ function real_image_path(?string $path): string {
         '/assets/images/claire-reception.webp' => '/assets/images/mega-will-details.webp',
     ];
 
-    return $replacements[$path] ?? (string) $path;
+    return asset_url($replacements[$path] ?? (string) $path);
 }
 start_secure_session();
