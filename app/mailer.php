@@ -27,7 +27,7 @@ function email_message_html(array $fields): string {
         . '</table></td></tr></table></body></html>';
 }
 
-function send_form_copy(string $subject, array $fields, string $recipient, array $attachments = []): bool {
+function send_form_copy(string $subject, array $fields, string $recipient, array $attachments = [], array $bccRecipients = []): bool {
     $autoload = ROOT_PATH . '/vendor/autoload.php';
     if (!is_readable($autoload)) {
         error_log('Email delivery skipped: PHPMailer is not installed. Run composer install or upload the vendor directory.');
@@ -48,6 +48,9 @@ function send_form_copy(string $subject, array $fields, string $recipient, array
         $mail->setFrom(env('SMTP_FROM'), 'Ellens Florist');
         if (filter_var($fields['Email'] ?? '', FILTER_VALIDATE_EMAIL) && $recipient !== $fields['Email']) $mail->addReplyTo($fields['Email']);
         $mail->addAddress($recipient);
+        foreach (array_unique($bccRecipients) as $bccRecipient) {
+            if (filter_var($bccRecipient, FILTER_VALIDATE_EMAIL) && $bccRecipient !== $recipient) $mail->addBCC($bccRecipient);
+        }
         $mail->Subject = $subject;
         $mail->isHTML();
         $mail->Body = email_message_html($fields);
@@ -66,6 +69,6 @@ function send_form_copy(string $subject, array $fields, string $recipient, array
 
 function notify_submission(string $subject, array $fields, string $customer, array $attachments = []): bool {
     $customer_sent = send_form_copy($subject, $fields, $customer, $attachments);
-    $support_sent = send_form_copy($subject, $fields, (string) env('SUPPORT_EMAIL'), $attachments);
+    $support_sent = send_form_copy($subject, $fields, (string) env('SUPPORT_EMAIL'), $attachments, [(string) env('MONIKA_EMAIL', 'monika@ellensflorist.com')]);
     return $customer_sent && $support_sent;
 }
